@@ -1,0 +1,3 @@
+libCEC allows you in combination with the right hardware to control your device with your TV remote control. Utilising your existing HDMI cabling.
+
+The cec-client command-line tool can be used to send and receive commands.

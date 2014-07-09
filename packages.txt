@@ -1,0 +1,3 @@
+sys-fs/eudev*
+dev-libs/lockdev*
+dev-libs/libcec*
