@@ -1,2 +1,5 @@
+2.1.4-r1:
+- Add support for ASUSTOR i386 arch (AS-2 and AS-3)
+
 2.1.4:
 - Initial release
