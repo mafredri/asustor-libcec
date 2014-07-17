@@ -1,18 +1,23 @@
 #!/bin/sh -e
 
 NAME=libcec
-PKG_PATH=/usr/local/AppCentral/libcec
+
+if [ -z $APKG_PKG_DIR ]; then
+    PKG_DIR=/usr/local/AppCentral/libcec
+else
+    PKG_DIR=$APKG_PKG_DIR
+fi
 
 . /lib/lsb/init-functions
 
 start_daemon () {
     # Load kernel module
-    MOD_PATH=$PKG_PATH/modules
+    MOD_PATH=$PKG_DIR/modules
     lsmod | grep -q '^cdc_acm' || insmod ${MOD_PATH}/cdc-acm.ko || true
 }
 
 stop_daemon () {
-    true
+    lsmod | grep -q '^cdc_acm' && modprobe -r cdc_acm || true
 }
 
 
