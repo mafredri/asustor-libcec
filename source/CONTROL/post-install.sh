@@ -6,6 +6,12 @@ else
     PKG_DIR=$APKG_PKG_DIR
 fi
 
+if [ $(uname -m) == "x86_64" ]; then
+    AS_NAS_ARCH="x86_64"
+else
+    AS_NAS_ARCH="i386"
+fi
+
 case "$APKG_PKG_STATUS" in
 	install)
 		;;
