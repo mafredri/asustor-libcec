@@ -10,7 +10,7 @@
     "email": "mafredri+adm@gmail.com",
     "website": "http://libcec.pulse-eight.com",
     "architecture": "ADM_ARCH",
-    "firmware": "2.2.0"
+    "firmware": "2.3.0"
   },
   "register": {
     "boot-priority": {
