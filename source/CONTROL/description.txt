@@ -1,3 +1,3 @@
-libCEC allows you in combination with the right hardware to control your device with your TV remote control. Utilising your existing HDMI cabling.
+libCEC
 
-The cec-client command-line tool can be used to send and receive commands.
+This library provides support for Pulse-Eight's USB-CEC adapter and other CEC capable hardware, like the Raspberry Pi.

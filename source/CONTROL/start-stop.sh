@@ -1,53 +1,57 @@
-#!/bin/sh -e
+#!/bin/sh
 
-NAME=libcec
+NAME="libCEC"
+PACKAGE="libcec"
 
-if [ -z $APKG_PKG_DIR ]; then
-    PKG_DIR=/usr/local/AppCentral/libcec
+if [ -z "${APKG_PKG_DIR}" ]; then
+	PKG_DIR=/usr/local/AppCentral/${PACKAGE}
 else
-    PKG_DIR=$APKG_PKG_DIR
+	PKG_DIR=$APKG_PKG_DIR
 fi
 
-. /lib/lsb/init-functions
+PYTHON_LIB="/usr/local/AppCentral/python/lib/python2.7"
+LINK_PKG_SOURCE="${PKG_DIR}/usr/lib/python2.7/site-packages/cec"
+LINK_PKG_TARGET="${PYTHON_LIB}/site-packages/cec"
+LINK_SO_SOURCE="${LINK_PKG_SOURCE}/_cec.so"
+LINK_SO_TARGET="${PYTHON_LIB}/lib-dynload/_cec.so"
 
-start_daemon () {
-    # Load kernel module
-    MOD_PATH=$PKG_DIR/modules
-    lsmod | grep -q '^cdc_acm' || insmod ${MOD_PATH}/cdc-acm.ko || true
+start() {
+	if ! /bin/ln -sn "$LINK_PKG_SOURCE" "$LINK_PKG_TARGET"; then
+		echo "ERROR: could not link cec python module to site-packages..."
+	fi
+	if ! /bin/ln -sn "$LINK_SO_SOURCE" "$LINK_SO_TARGET"; then
+		echo "ERROR: could not link cec python module to lib-dynload..."
+	fi
 }
 
-stop_daemon () {
-    lsmod | grep -q '^cdc_acm' && modprobe -r cdc_acm || true
+stop() {
+	if [ "$(/usr/bin/readlink -n "$LINK_PKG_TARGET")" = "$LINK_PKG_SOURCE" ]; then
+		rm "$LINK_PKG_TARGET"
+	else
+		echo "ERROR: could not unlink cec python module..."
+	fi
+
+	if [ "$(/usr/bin/readlink -n "$LINK_SO_TARGET")" = "$LINK_SO_SOURCE" ]; then
+		rm "$LINK_SO_TARGET"
+	else
+		echo "ERROR: could not unlink cec python module..."
+	fi
 }
 
+case $1 in
+	start)
+		echo "Starting ${NAME}..."
+		start
+		;;
 
-case "$1" in
-    start)
-        log_daemon_msg "Starting" "$NAME"
-        start_daemon
-        log_end_msg 0
-        ;;
-    stop)
-        log_daemon_msg "Stopping" "$NAME"
-        stop_daemon
-        log_end_msg 0
-        ;;
-    reload)
-        log_daemon_msg "Reloading" "$NAME"
-        stop_daemon
-        start_daemon
-        log_end_msg 0
-        ;;
-    restart|force-reload)
-        log_daemon_msg "Restarting" "$NAME"
-        stop_daemon
-        start_daemon
-        log_end_msg 0
-        ;;
-    *)
-        echo "Usage: start-stop.sh {start|stop|reload|force-reload|restart}"
-        exit 2
-        ;;
+	stop)
+		echo "Stopping ${NAME}..."
+		stop
+		;;
+	*)
+		echo "usage: $0 {start|stop}"
+		exit 1
+		;;
 esac
 
 exit 0

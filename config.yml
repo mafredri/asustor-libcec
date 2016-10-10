@@ -1,0 +1,42 @@
+---
+ssh: ascross
+
+package: libcec
+name: libCEC
+version: 3.1.0
+architecture: ""
+firmware: 2.6.0
+
+config:
+  general:
+    developer: "Pulse-Eight"
+    website: "https://github.com/Pulse-Eight/libcec"
+    maintainer: "mafredri"
+    email: "mafredri+adm@gmail.com"
+    depends:
+      - media-pack
+    conflicts: []
+    package: "PACKAGE"
+    name: "NAME"
+    version: "VERSION"
+    architecture: "ARCHITECTURE"
+    firmware: "FIRMWARE"
+  register:
+    symbolic-link:
+      /bin:
+        - "cec-client"
+        - "cecc-client"
+
+case_sensitive: false
+runpath: /usr/local/AppCentral/libcec/lib:/usr/local/AppCentral/libcec/usr/lib
+updated_libstdcpp: true
+root: /
+files:
+  - /usr/bin/cec-client*
+  - /usr/bin/cecc-client*
+  - /usr/bin/pyCecClient.py
+  - /usr/lib/libcec.so*
+  - /lib/libudev.so.1*
+  - /lib/libncurses.so.6*
+site_packages:
+  - dev-libs/libcec # include cec.so from site-packages

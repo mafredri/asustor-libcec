@@ -1,6 +1,0 @@
-#!/bin/sh
-PKG_PATH=/usr/local/AppCentral/libcec
-export PATH=$PKG_PATH/bin:$PATH
-export LD_LIBRARY_PATH=$PKG_PATH/lib:$LD_LIBRARY_PATH
-
-cec-client- $@
